@@ -13,20 +13,33 @@
     .wrap { display:flex; gap:18px; flex-wrap:wrap; margin-top:16px; }
     .panel { background:#fff; border:1px solid #e6e6e6; border-radius:14px; padding:12px; }
     .title { font-weight:700; margin:0 0 10px 0; }
-    .grid { display:grid; grid-template-columns: repeat(9, 34px); grid-template-rows: repeat(9, 34px); }
+    
+    .grid {
+      direction: ltr; /* keep sudoku columns LTR even if page is RTL */ 
+      display:grid; 
+      grid-template-columns: repeat(9, 34px); 
+      grid-template-rows: repeat(9, 34px); 
+      border: 2px solid #111; 
+    }
     .cell {
       width:34px; height:34px; display:flex; align-items:center; justify-content:center;
       border:1px solid #e5e7eb; font-weight:600; background:#fff;
+      box-sizing: border-box;
     }
-    /* خطوط سميكة لمربعات 3x3 */
-    .cell:nth-child(3n){ border-left:2px solid #111; }
-    .cell:nth-child(9n){ border-left:1px solid #e5e7eb; }
-    .cell:nth-child(n+19):nth-child(-n+27),
-    .cell:nth-child(n+46):nth-child(-n+54){
-      border-top:2px solid #111;
+
+    /* ✅ تخطيط مربعات 3×3 (فواصل سميكة بعد العمود 3 و6 وبعد الصف 3 و6) */
+    /* فواصل عمودية: بعد كل 3 أعمدة (الأعمدة 3 و6) */
+    .cell:nth-child(9n + 3),
+    .cell:nth-child(9n + 6) {
+      border-right: 3px solid #111;
     }
-    .grid { border:2px solid #111; }
-    .fixed { color:#111; }
+
+    /* فواصل أفقية: بعد كل 3 صفوف (الصفوف 3 و6) */
+    .cell:nth-child(n + 19):nth-child(-n + 27),
+    .cell:nth-child(n + 46):nth-child(-n + 54) {
+      border-bottom: 3px solid #111;
+    }
+.fixed { color:#111; }
     .empty { color:#bbb; }
     .meta { margin-top:10px; font-size:14px; color:#444; line-height:1.6; }
     code { background:#f3f4f6; padding:2px 6px; border-radius:8px; }
