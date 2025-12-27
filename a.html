@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sudoku Generator (Live)</title>
+  <style>
+    body { font-family: system-ui, Arial; padding: 16px; background:#f6f7fb; color:#111; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    select, button { padding:10px 12px; border-radius:10px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+    button { background:#4f46e5; color:#fff; border:none; }
+    button:active { transform: translateY(1px); }
+    .wrap { display:flex; gap:18px; flex-wrap:wrap; margin-top:16px; }
+    .panel { background:#fff; border:1px solid #e6e6e6; border-radius:14px; padding:12px; }
+    .title { font-weight:700; margin:0 0 10px 0; }
+    .grid { display:grid; grid-template-columns: repeat(9, 34px); grid-template-rows: repeat(9, 34px); }
+    .cell {
+      width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+      border:1px solid #e5e7eb; font-weight:600; background:#fff;
+    }
+    /* خطوط سميكة لمربعات 3x3 */
+    .cell:nth-child(3n){ border-left:2px solid #111; }
+    .cell:nth-child(9n){ border-left:1px solid #e5e7eb; }
+    .cell:nth-child(n+19):nth-child(-n+27),
+    .cell:nth-child(n+46):nth-child(-n+54){
+      border-top:2px solid #111;
+    }
+    .grid { border:2px solid #111; }
+    .fixed { color:#111; }
+    .empty { color:#bbb; }
+    .meta { margin-top:10px; font-size:14px; color:#444; line-height:1.6; }
+    code { background:#f3f4f6; padding:2px 6px; border-radius:8px; }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <label>الصعوبة:</label>
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+      <option value="expert">Expert</option>
+    </select>
+
+    <button id="btn">إنشاء لغز جديد</button>
+    <button id="btnShow">إظهار/إخفاء الحل</button>
+  </div>
+
+  <div class="wrap">
+    <div class="panel">
+      <p class="title">اللغز (Puzzle)</p>
+      <div id="puzzle" class="grid"></div>
+      <div id="info" class="meta"></div>
+    </div>
+
+    <div class="panel" id="solPanel" style="display:none">
+      <p class="title">الحل (Solution)</p>
+      <div id="solution" class="grid"></div>
+      <div class="meta">
+        هذا هو الحل الكامل الذي استُخدم لمقارنة صحة اللغز.
+      </div>
+    </div>
+  </div>
+
+<script>
+/**
+ * Sudoku Generator (Live)
+ * - 1) createEmptyGrid(): 9x9 مليانة أصفار
+ * - 2) fillDiagonal(): تعبئة المربعات القطرية 3x3 عشوائيًا
+ * - 3) solveBacktracking(): إكمال الحل باستخدام Backtracking
+ * - 4) makePuzzle(): حذف أرقام حسب الصعوبة لصنع اللغز
+ */
+
+const HOLES_BY_DIFFICULTY = {
+  easy: 30,
+  medium: 40,
+  hard: 50,
+  expert: 60
+};
+
+function createEmptyGrid() {
+  return Array.from({ length: 9 }, () => Array(9).fill(0));
+}
+
+function cloneGrid(grid) {
+  return grid.map(row => row.slice());
+}
+
+function isSafe(grid, row, col, num) {
+  // صف
+  for (let c = 0; c < 9; c++) if (grid[row][c] === num) return false;
+  // عمود
+  for (let r = 0; r < 9; r++) if (grid[r][col] === num) return false;
+  // مربع 3x3
+  const startRow = row - (row % 3);
+  const startCol = col - (col % 3);
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      if (grid[startRow + r][startCol + c] === num) return false;
+    }
+  }
+  return true;
+}
+
+function shuffle(arr) {
+  // Fisher–Yates
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function fillBox(grid, rowStart, colStart) {
+  const nums = shuffle([1,2,3,4,5,6,7,8,9]);
+  let idx = 0;
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      grid[rowStart + r][colStart + c] = nums[idx++];
+    }
+  }
+}
+
+function fillDiagonal(grid) {
+  // مربعات قطرية: (0,0), (3,3), (6,6)
+  for (let i = 0; i < 9; i += 3) {
+    fillBox(grid, i, i);
+  }
+}
+
+function findEmpty(grid) {
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (grid[r][c] === 0) return { r, c };
+    }
+  }
+  return null;
+}
+
+function solveBacktracking(grid) {
+  const empty = findEmpty(grid);
+  if (!empty) return true; // اكتمل
+
+  const { r, c } = empty;
+  // ترتيب أرقام عشوائي يعطي حلول متنوعة
+  const nums = shuffle([1,2,3,4,5,6,7,8,9]);
+
+  for (const num of nums) {
+    if (isSafe(grid, r, c, num)) {
+      grid[r][c] = num;
+      if (solveBacktracking(grid)) return true;
+      grid[r][c] = 0; // رجوع للخلف
+    }
+  }
+  return false;
+}
+
+function generateSolvedGrid() {
+  const grid = createEmptyGrid();
+  fillDiagonal(grid);
+  solveBacktracking(grid);
+  return grid;
+}
+
+function makePuzzleFromSolution(solution, difficulty) {
+  const holes = HOLES_BY_DIFFICULTY[difficulty] ?? 40;
+  const puzzle = cloneGrid(solution);
+
+  let attempts = holes;
+  while (attempts > 0) {
+    const r = Math.floor(Math.random() * 9);
+    const c = Math.floor(Math.random() * 9);
+    if (puzzle[r][c] !== 0) {
+      puzzle[r][c] = 0;
+      attempts--;
+    }
+  }
+  return puzzle;
+}
+
+function countFilled(grid) {
+  let filled = 0;
+  for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) if (grid[r][c] !== 0) filled++;
+  return filled;
+}
+
+function renderGrid(container, grid, fixedMask = null) {
+  container.innerHTML = "";
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const v = grid[r][c];
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      if (v === 0) {
+        cell.textContent = "·";
+        cell
