@@ -193,4 +193,60 @@ function renderGrid(container, grid, fixedMask = null) {
       cell.className = "cell";
       if (v === 0) {
         cell.textContent = "·";
-        cell
+        cell.classList.add("empty");
+      } else {
+        cell.textContent = v;
+        // fixedMask: لو كانت خانة ثابتة (موجودة في اللغز) نلونها كـ fixed
+        if (fixedMask && fixedMask[r][c] !== 0) cell.classList.add("fixed");
+      }
+      container.appendChild(cell);
+    }
+  }
+}
+
+/* UI */
+const difficultyEl = document.getElementById("difficulty");
+const btn = document.getElementById("btn");
+const btnShow = document.getElementById("btnShow");
+const puzzleEl = document.getElementById("puzzle");
+const solutionEl = document.getElementById("solution");
+const solPanel = document.getElementById("solPanel");
+const infoEl = document.getElementById("info");
+
+let lastPuzzle = null;
+let lastSolution = null;
+
+function newPuzzle() {
+  const diff = difficultyEl.value;
+
+  // 1) حل كامل
+  const solution = generateSolvedGrid();
+
+  // 2) لغز بحذف أرقام
+  const puzzle = makePuzzleFromSolution(solution, diff);
+
+  lastPuzzle = puzzle;
+  lastSolution = solution;
+
+  // عرض
+  renderGrid(puzzleEl, puzzle, puzzle);      // ثابت = الأرقام الموجودة في اللغز
+  renderGrid(solutionEl, solution, puzzle);  // نفس الثوابت أيضاً للتمييز
+
+  const filled = countFilled(puzzle);
+  const holes = 81 - filled;
+  infoEl.innerHTML =
+    `الصعوبة: <code>${diff}</code><br>` +
+    `عدد الخانات المعبأة: <code>${filled}</code> من 81<br>` +
+    `عدد الخانات المحذوفة (Holes): <code>${holes}</code>`;
+}
+
+btn.addEventListener("click", newPuzzle);
+btnShow.addEventListener("click", () => {
+  solPanel.style.display = (solPanel.style.display === "none") ? "block" : "none";
+});
+
+// تشغيل أول مرة
+newPuzzle();
+</script>
+</body>
+</html>
