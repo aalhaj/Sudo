@@ -1,0 +1,485 @@
+:root {
+    --bg-color: #f8f9fa;
+    --text-color: #1f2937;
+    --board-bg: #ffffff;
+    --grid-line: #e5e7eb;
+    --grid-line-thick: #374151;
+    --cell-hover: #f3f4f6;
+    --cell-selected: #e0e7ff;
+    /* Light indigo */
+    --cell-related: #eff6ff;
+    /* Very light blue */
+    --cell-same-num: #c7d2fe;
+    /* Indigo 200 */
+    --primary-color: #4f46e5;
+    /* Indigo 600 */
+    --primary-hover: #4338ca;
+    --error-color: #ef4444;
+    --error-bg: #fee2e2;
+    --fixed-text: #111827;
+    --user-text: #4f46e5;
+    --note-text: #6b7280;
+    --btn-bg: #ffffff;
+    --btn-text: #374151;
+    --btn-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+    --bg-color: #111827;
+    --text-color: #f9fafb;
+    --board-bg: #1f2937;
+    --grid-line: #374151;
+    --grid-line-thick: #9ca3af;
+    --cell-hover: #374151;
+    --cell-selected: #312e81;
+    /* Indigo 900 */
+    --cell-related: #1e1b4b;
+    /* Indigo 950 */
+    --cell-same-num: #4338ca;
+    /* Indigo 700 */
+    --primary-color: #6366f1;
+    /* Indigo 500 */
+    --primary-hover: #818cf8;
+    --error-color: #f87171;
+    --error-bg: #450a0a;
+    --fixed-text: #e5e7eb;
+    --user-text: #818cf8;
+    --note-text: #9ca3af;
+    --btn-bg: #1f2937;
+    --btn-text: #e5e7eb;
+    --btn-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Full viewport height for mobile app feel */
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.header-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+select {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--grid-line-thick);
+    background-color: var(--btn-bg);
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 0.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#theme-toggle:hover {
+    background-color: var(--cell-hover);
+}
+
+/* Game Info */
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--note-text);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-item .value {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Game Board */
+.game-board-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    /* Allow it to take available space */
+    align-items: center;
+    /* Center vertically */
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    width: 100%;
+    max-width: 400px;
+    /* Max width for larger screens */
+    aspect-ratio: 1;
+    background-color: var(--grid-line-thick);
+    border: 2px solid var(--grid-line-thick);
+    gap: 1px;
+}
+
+.cell {
+    background-color: var(--board-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    color: var(--fixed-text);
+}
+
+/* Responsive font size for cells */
+@media (max-width: 400px) {
+    .cell {
+        font-size: 1.2rem;
+    }
+}
+
+/* Thick borders for 3x3 boxes */
+.cell:nth-child(3n) {
+    border-right: 2px solid var(--grid-line-thick);
+}
+
+.cell:nth-child(9n) {
+    border-right: none;
+    /* Handled by container border */
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid var(--grid-line-thick);
+}
+
+/* Remove gap simulation for cleaner borders if using border approach, 
+   but gap: 1px with background color is a common trick. 
+   Let's refine the 3x3 borders. */
+.game-board {
+    gap: 0;
+    border: 2px solid var(--grid-line-thick);
+}
+
+.cell {
+    border-right: 1px solid var(--grid-line);
+    border-bottom: 1px solid var(--grid-line);
+}
+
+/* Right border for 3rd and 6th column */
+.cell:nth-child(3n) {
+    border-right: 2px solid var(--grid-line-thick);
+}
+
+/* No right border for last column */
+.cell:nth-child(9n) {
+    border-right: none;
+}
+
+/* Bottom border for 3rd and 6th row */
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid var(--grid-line-thick);
+}
+
+/* No bottom border for last row */
+.cell:nth-child(n+73) {
+    border-bottom: none;
+}
+
+/* States */
+.cell.selected {
+    background-color: var(--cell-selected);
+}
+
+.cell.related {
+    background-color: var(--cell-related);
+}
+
+.cell.same-num {
+    background-color: var(--cell-same-num);
+}
+
+.cell.error {
+    background-color: var(--error-bg);
+    color: var(--error-color);
+}
+
+.cell.user-input {
+    color: var(--user-text);
+}
+
+/* Notes */
+.cell .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.cell .note {
+    font-size: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--note-text);
+    visibility: hidden;
+}
+
+.cell .note.active {
+    visibility: visible;
+}
+
+/* Controls Area */
+.controls-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    /* Space at bottom */
+}
+
+.tools {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.tool-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--btn-bg);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--btn-text);
+    box-shadow: var(--btn-shadow);
+    transition: transform 0.1s;
+    position: relative;
+}
+
+.tool-btn:active {
+    transform: translateY(1px);
+}
+
+.tool-btn svg {
+    margin-bottom: 0.25rem;
+}
+
+.tool-btn span {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.note-indicator {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--note-text);
+    color: white;
+    font-size: 0.6rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: none;
+}
+
+.tool-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.tool-btn.active .note-indicator {
+    display: block;
+    background-color: white;
+    color: var(--primary-color);
+}
+
+/* Numpad */
+.numpad {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0.25rem;
+}
+
+.num-btn {
+    aspect-ratio: 0.8;
+    /* Taller than wide */
+    background-color: var(--btn-bg);
+    /* Use button background */
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    cursor: pointer;
+    box-shadow: var(--btn-shadow);
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.num-btn:hover {
+    background-color: var(--cell-hover);
+}
+
+.num-btn:active {
+    background-color: var(--cell-selected);
+}
+
+/* New Game Button */
+.new-game-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.new-game-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Modals */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: var(--board-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    width: 300px;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.modal-content p {
+    margin-bottom: 1.5rem;
+    color: var(--note-text);
+}
+
+.modal-content button {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+@media (max-width: 350px) {
+    .numpad {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .num-btn:nth-child(n+6) {
+        grid-row: 2;
+    }
+}
+
+/* Animation for completed row/col/box */
+@keyframes success-pulse {
+    0% {
+        background-color: var(--cell-related);
+    }
+
+    50% {
+        background-color: var(--cell-same-num);
+        transform: scale(1.05);
+        z-index: 10;
+    }
+
+    100% {
+        background-color: var(--board-bg);
+        transform: scale(1);
+        z-index: 1;
+    }
+}
+
+.cell.completed-animation {
+    animation: success-pulse 0.6s ease-in-out;
+}

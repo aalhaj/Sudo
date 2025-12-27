@@ -1,322 +1,124 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 لعبة سودوكو الاحترافية</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-        }
-        
-        .container {
-            max-width: 1200px;
-            padding: 20px;
-        }
-        
-        .header {
-            margin-bottom: 40px;
-        }
-        
-        .title {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-        
-        .feature-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: transform 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        
-        .feature-desc {
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-        
-        .download-section {
-            margin: 50px 0;
-            padding: 40px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .download-title {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: #ffd700;
-        }
-        
-        .download-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 30px 0;
-        }
-        
-        .download-btn {
-            display: inline-block;
-            padding: 15px 30px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-        
-        .file-list {
-            text-align: right;
-            margin: 30px 0;
-            background: rgba(0,0,0,0.3);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        .file-list h3 {
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        
-        .file-list ul {
-            list-style: none;
-        }
-        
-        .file-list li {
-            margin: 10px 0;
-            padding: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 5px;
-        }
-        
-        .instructions {
-            margin: 40px 0;
-            padding: 30px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .instructions h3 {
-            color: #ffd700;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        
-        .instructions ol {
-            text-align: right;
-            font-size: 1.1rem;
-            line-height: 1.8;
-        }
-        
-        .instructions li {
-            margin: 10px 0;
-        }
-        
-        .footer {
-            margin-top: 50px;
-            padding: 30px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 15px;
-        }
-        
-        .footer p {
-            font-size: 1.1rem;
-            margin: 10px 0;
-        }
-        
-        .tech-stack {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        .tech-badge {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .features {
-                grid-template-columns: 1fr;
-            }
-            
-            .download-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sudoku Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">🎮 لعبة سودوكو الاحترافية</h1>
-            <p class="subtitle">Sudoku Professional Game - لعبة أرقام ذكية مع واجهة رسومية تفاعلية</p>
-        </div>
-        
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3 class="feature-title">محرك ذكي</h3>
-                <p class="feature-desc">مولد ألغاز سودوكو صالحة تلقائياً مع ضمان حل واحد فقط لكل لغز</p>
+    <div class="app-container">
+        <header>
+            <h1>Sudoku</h1>
+            <div class="header-controls">
+                <select id="difficulty-select">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                    <option value="expert">Expert</option>
+                </select>
+                <button id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
             </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <h3 class="feature-title">واجهة احترافية</h3>
-                <p class="feature-desc">تصميم رسومي جميل مع ثيمات متعددة وتفاعل كامل بالماوس ولوحة المفاتيح</p>
+        </header>
+
+        <div class="game-info">
+            <div class="info-item">
+                <span class="label">Mistakes</span>
+                <span class="value" id="mistakes">0/3</span>
             </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🏆</div>
-                <h3 class="feature-title">ميزات متقدمة</h3>
-                <p class="feature-desc">عداد وقت، عداد أخطاء، 4 مستويات صعوبة، تلميحات، ملاحظات، وإحصائيات تفصيلية</p>
+            <div class="info-item">
+                <span class="label">Time</span>
+                <span class="value" id="timer">00:00</span>
             </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🎯</div>
-                <h3 class="feature-title">سهولة الاستخدام</h3>
-                <p class="feature-desc">واجهة عربية متكاملة، نظام لعب بديهي، ودعم كامل للمبتدئين والمحترفين</p>
-            </div>
-        </div>
-        
-        <div class="download-section">
-            <h2 class="download-title">📥 تحميل اللعبة</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 30px;">جميع الملفات جاهزة للتشغيل الفوري!</p>
-            
-            <div class="download-buttons">
-                <a href="install_and_play.sh" class="download-btn" download>
-                    🚀 تثبيت والعب فوراً
-                </a>
-                <a href="sudoku_enhanced.py" class="download-btn" download>
-                    🎮 النسخة المحسنة
-                </a>
-                <a href="sudoku_game.py" class="download-btn" download>
-                    ⚡ النسخة الأساسية
-                </a>
-                <a href="run_sudoku.py" class="download-btn" download>
-                    🎯 برنامج التشغيل
-                </a>
-            </div>
-            
-            <div class="file-list">
-                <h3>📁 الملفات المتوفرة:</h3>
-                <ul>
-                    <li><strong>sudoku_game.py</strong> - النسخة الأساسية (16KB)</li>
-                    <li><strong>sudoku_enhanced.py</strong> - النسخة المحسنة مع الميزات الإضافية (26KB)</li>
-                    <li><strong>run_sudoku.py</strong> - برنامج تشغيل متقدم مع خيارات</li>
-                    <li><strong>install_and_play.sh</strong> - سكربت تثبيت وتشغيل تلقائي</li>
-                    <li><strong>requirements.txt</strong> - متطلبات المكتبات</li>
-                    <li><strong>ملفات التوثيق</strong> - دليل الاستخدام والميزات</li>
-                </ul>
+            <div class="info-item">
+                <span class="label">Difficulty</span>
+                <span class="value" id="difficulty-display">Medium</span>
             </div>
         </div>
-        
-        <div class="instructions">
-            <h3>🎯 طريقة التشغيل السريعة:</h3>
-            <ol>
-                <li><strong>الطريقة الأسهل (مستحسن):</strong><br>
-                    تنفيذ ملف <code>install_and_play.sh</code> للتثبيت التلقائي والتشغيل الفوري</li>
-                
-                <li><strong>الطريقة البديلة:</strong><br>
-                    تثبيت pygame: <code>pip3 install pygame</code><br>
-                    ثم تشغيل: <code>python3 sudoku_enhanced.py</code></li>
-                
-                <li><strong>الطريقة اليدوية:</strong><br>
-                    تحميل الملفات واستخدام أي نسخة حسب الرغبة</li>
-            </ol>
+
+        <div class="game-board-container">
+            <div id="game-board" class="game-board">
+                <!-- Grid generated by JS -->
+            </div>
         </div>
-        
-        <div class="footer">
-            <h3 style="color: #ffd700; margin-bottom: 20px;">🎮 استمتع بلعبتك!</h3>
-            
-            <div class="tech-stack">
-                <span class="tech-badge">Python 3.6+</span>
-                <span class="tech-badge">Pygame 2.5+</span>
-                <span class="tech-badge">واجهة عربية</span>
-                <span class="tech-badge">رسومات تفاعلية</span>
-                <span class="tech-badge">مفتوحة المصدر</span>
+
+        <div class="controls-area">
+            <div class="tools">
+                <button class="tool-btn" id="btn-undo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6"></path>
+                        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                    </svg>
+                    <span>Undo</span>
+                </button>
+                <button class="tool-btn" id="btn-erase">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11L20 20Z"></path>
+                        <path d="M11 11L17 17"></path>
+                    </svg>
+                    <span>Erase</span>
+                </button>
+                <button class="tool-btn" id="btn-note">
+                    <div class="note-indicator">OFF</div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                        <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                        <path d="M2 2l7.586 7.586"></path>
+                        <path d="M11 11l-4 4"></path>
+                    </svg>
+                    <span>Notes</span>
+                </button>
+                <button class="tool-btn" id="btn-hint">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path>
+                        <path d="M9 21v1h6v-1"></path>
+                    </svg>
+                    <span>Hint</span>
+                </button>
+            </div>
+
+            <div class="numpad">
+                <button class="num-btn" data-num="1">1</button>
+                <button class="num-btn" data-num="2">2</button>
+                <button class="num-btn" data-num="3">3</button>
+                <button class="num-btn" data-num="4">4</button>
+                <button class="num-btn" data-num="5">5</button>
+                <button class="num-btn" data-num="6">6</button>
+                <button class="num-btn" data-num="7">7</button>
+                <button class="num-btn" data-num="8">8</button>
+                <button class="num-btn" data-num="9">9</button>
             </div>
             
-            <p><strong>🎯 المميزات:</strong> 4 مستويات صعوبة • عداد وقت • عداد أخطاء • تلميحات • ملاحظات • إحصائيات • ثيمات متعددة</p>
-            
-            <p><strong>📋 المتطلبات:</strong> Python 3.6+ • Pygame • 50MB مساحة • دقة شاشة 800x700</p>
-            
-            <p style="margin-top: 30px; font-size: 1.2rem; color: #ffd700;">
-                ✅ جميع المتطلبات مُنجَزة • ✅ ميزات إضافية احترافية • ✅ جاهزة للتشغيل الفوري
-            </p>
+            <button id="btn-new-game" class="new-game-btn">New Game</button>
         </div>
     </div>
+
+    <!-- Modals -->
+    <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Game Over</h2>
+            <p>You made too many mistakes!</p>
+            <button id="btn-restart">Try Again</button>
+        </div>
+    </div>
+
+    <div id="win-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Excellent!</h2>
+            <p>You solved the puzzle!</p>
+            <p class="win-time">Time: <span id="final-time">00:00</span></p>
+            <p class="win-difficulty">Difficulty: <span id="final-difficulty">Medium</span></p>
+            <button id="btn-new-game-win">New Game</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
